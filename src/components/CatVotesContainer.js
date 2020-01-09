@@ -1,29 +1,28 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import { getCatRequest, voteCatRequest } from '../redux'
-import { withRouter } from 'react-router-dom';
 
 function  CatVotesContainer(props) {
   useEffect(() => {
-    console.log("use effect")
-    console.log(props)
-    props.getCat()
-  }, [])
+    if (props.data.getNextImage === true) {
+      props.getCat()
+    }
+  }, [props.data.getNextImage])
  return (
     <div>
       <h2>Vote!</h2>
-      { props.data.loading ? 
-      <div>
-        <h3>loading...</h3>
-      </div> 
-      : 
-      <div>
-      <div>
-        <img src={props.data.cat.url} alt='no' />
+      <div className="imgContainer">
+        { props.data.loading ? 
+        <div>
+          <h3>loading...</h3>
+        </div> 
+        : 
+        <div>
+          <img className="voteImg" width="500" height="700" src={props.data.cat.url} />
+        </div>}
       </div>
-      <button onClick={() => props.voteYes(true)}>YES</button>
-      <button onClick={() => props.voteYes(false)}>NO</button> 
-      </div>}
+      <button onClick={() => props.voteYes(props.data.cat.id, 1)}>YES</button>
+      <button onClick={() => props.voteYes(props.data.cat.id, 0)}>NO</button> 
     </div> 
   );
 }
@@ -37,14 +36,10 @@ const mapPropsToState = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getCat: () => {
-      console.log("here")
-      console.log(getCatRequest())
-      console.log(dispatch)
       dispatch(getCatRequest())
-      console.log("here2")
     },
-    voteYes: (vote) => dispatch(voteCatRequest(vote))
+    voteYes: (id, vote) => dispatch(voteCatRequest(id, vote))
   }
 }
 
-export default withRouter(connect(mapPropsToState, mapDispatchToProps)(CatVotesContainer))
+export default connect(mapPropsToState, mapDispatchToProps)(CatVotesContainer)

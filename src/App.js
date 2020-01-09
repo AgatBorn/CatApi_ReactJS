@@ -1,9 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux'
-import { Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import './App.css';
-import { getStore, history } from "./redux/store"
-import { ConnectedRouter } from 'connected-react-router'
+import { getStore } from "./redux/store"
 import NavBarContainer from './components/NavBarContainer'
 import CatVotesContainer from './components/CatVotesContainer'
 import BreedsContainer from './components/BreedsContainer'
@@ -14,7 +13,7 @@ const store = getStore();
 function App() {
   return (
     <Provider store={store}>
-      <ConnectedRouter history={history}>
+      <BrowserRouter>
         <div className="App">
           <NavBarContainer />
             <Switch>
@@ -23,7 +22,7 @@ function App() {
               <Route path="/search" component={SearchContainer}></Route>
             </Switch>
         </div>
-      </ConnectedRouter>
+      </BrowserRouter>
     </Provider>
   );
 }

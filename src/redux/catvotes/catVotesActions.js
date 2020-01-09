@@ -20,10 +20,13 @@ export const getCatFailure = error => {
     }
 }
 
-export const voteCatRequest = (vote) => {
+export const voteCatRequest = (id, vote) => {
     return {
         type: VOTE_CAT_REQUEST,
-        payload: vote
+        payload: {
+            "id": id,
+            "vote": vote
+        }
     }
 }
 

@@ -1,6 +1,5 @@
-import { actionChannel, call, put } from 'redux-saga/effects'
-import { GET_CAT_REQUEST } from '../redux/catvotes/catVotesTypes'
-import { getCatRequest, getCatSuccess, getCatFailure } from '../redux/catvotes/catVotesActions'
+import { call, put } from 'redux-saga/effects'
+import { getCatSuccess, getCatFailure, voteCatSuccess, voteCatFailure } from '../redux/catvotes/catVotesActions'
 import axios from 'axios'
 
 const config = {
@@ -11,14 +10,30 @@ const getCat = () => {
     return axios.get('https://api.thecatapi.com/v1/images/search', {headers: config});
 }
 
+const sendVote = (id, vote) => {
+    const payload = {
+        "image_id": id,
+        "value": vote
+    }
+    return axios.post('https://api.thecatapi.com/v1/votes', payload, {headers: config});
+}
+
 export function* getVoteCat() {
-    yield actionChannel(GET_CAT_REQUEST);
-    //yield put(getCatRequest());
     try {
         const response = yield call(getCat);
         console.log(response)
         yield put(getCatSuccess(response.data[0]));
     } catch (error) {
         yield put(getCatFailure(error.message));
+    }
+}
+
+export function* sendVoteForCat(action) {
+    try {
+        const response = yield call(sendVote, action.payload.id, action.payload.vote);
+        console.log(response)
+        yield put(voteCatSuccess(response));
+    } catch (error) {
+        yield put(voteCatFailure(error.message));
     }
 }

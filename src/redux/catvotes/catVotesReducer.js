@@ -3,7 +3,8 @@ import {GET_CAT_REQUEST, GET_CAT_SUCCESS, GET_CAT_FAILURE, VOTE_CAT_REQUEST, VOT
 const initialState = {
     loading: false,
     cat: {},
-    error: ''
+    error: '',
+    getNextImage: true
 }
 
 const catVotesReducer = (state = initialState, action) => {
@@ -11,36 +12,42 @@ const catVotesReducer = (state = initialState, action) => {
         case GET_CAT_REQUEST:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                getNextImage: false
             }
         case GET_CAT_SUCCESS:
             return {
                 loading: false,
                 cat: action.payload,
-                error: ''
+                error: '',
+                getNextImage: false
             }
         case GET_CAT_FAILURE:
             return {
                 loading: false,
                 cat: {},
-                error: action.payload
+                error: action.payload,
+                getNextImage: false
             }
         case VOTE_CAT_REQUEST:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                getNextImage: false
             }
         case VOTE_CAT_SUCCESS:
             return {
                 loading: false,
                 cat: {},
-                error: ''
+                error: '',
+                getNextImage: true
             }
         case VOTE_CAT_FAILURE:
             return {
                 loading: false,
                 cat: {},
-                error: action.payload
+                error: action.payload,
+                getNextImage: false
             }
         default: return state
     }
