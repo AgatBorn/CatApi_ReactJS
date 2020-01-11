@@ -12,18 +12,22 @@ function BreedsContainer(props) {
  return (
     <div>
       <h2>Breeds!</h2>
-      {props.breeds && (
-        <div>
-          {props.breeds.breeds.map(breed => (
-            <div key={breed.id}>
-               <Link to={`/breeds/${breed.id}`}><h3>{ breed.name } ({ breed.origin })</h3></Link>
-               <h4>{ breed.temperament }</h4>
-               <p>{ breed.description }</p>
-               <a href={breed.wikipedia_url}>wikipedia</a>
-            </div>
-          ))}
-        </div>
-      )}
+      {props.breeds.loading ?
+      <div>
+        <h2>loading...</h2>
+      </div>
+        :
+      <div>
+        {props.breeds.breeds.map(breed => (
+          <div key={breed.id}>
+              <Link to={`/breeds/${breed.id}`}><h3>{ breed.name } ({ breed.origin })</h3></Link>
+              <h4>{ breed.temperament }</h4>
+              <p>{ breed.description }</p>
+              <a href={breed.wikipedia_url}>wikipedia</a>
+          </div>
+        ))}
+      </div>
+      }
     </div> 
   );
 }
