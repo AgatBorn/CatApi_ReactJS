@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects'
 import axios from 'axios'
-import { getCatSuccess, getCatFailure, voteCatSuccess, voteCatFailure } from '../redux/catvotes/catVotesActions'
+import { getCatSuccess, getCatFailure, voteCatSuccess, voteCatFailure } from '../redux'
 
 const config = {
     'x-api-key': "12a6c6ee-0295-4785-8b42-8cae7f06fd86"
