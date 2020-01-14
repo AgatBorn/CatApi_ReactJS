@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { getCatRequest, voteCatRequest } from '../redux'
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+import Container from 'react-bootstrap/Container';
+import Jumbotron from 'react-bootstrap/Jumbotron';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 function  CatVotesContainer(props) {
   useEffect(() => {
@@ -9,21 +14,24 @@ function  CatVotesContainer(props) {
     }
   }, [props.data.getNextImage])
  return (
-    <div>
-      <h2>Vote!</h2>
+    <Container fluid>
+      <Jumbotron fluid className="p-3 bg-light text-dark">
+        <h1 className="h2">Vote for your favourite cats!</h1>
+        <p>Click 'YES' if you like this cat, 'NO' if you don't like it.</p>
+      </Jumbotron>
       <div className="imgContainer">
         { props.data.loading ? 
         <div>
-          <h3>loading...</h3>
-        </div> 
+          <Spinner animation="border" variant="primary" />
+        </div>
         : 
         <div>
           <img className="voteImg" width="500" height="700" src={props.data.cat.url} />
         </div>}
       </div>
-      <button onClick={() => props.voteYes(props.data.cat.id, 1)}>YES</button>
-      <button onClick={() => props.voteYes(props.data.cat.id, 0)}>NO</button> 
-    </div> 
+      <Button className="mr-1 mt-3" variant="primary" style={{ width: '100px'}} onClick={() => props.voteYes(props.data.cat.id, 1)}>YES</Button>
+      <Button className="ml-1 mt-3" variant="outline-secondary" style={{ width: '100px'}} onClick={() => props.voteYes(props.data.cat.id, 0)}>NO</Button> 
+    </Container> 
   );
 }
 

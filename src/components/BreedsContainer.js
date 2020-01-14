@@ -2,7 +2,12 @@ import React, {useEffect} from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getAllBreedsRequest } from '../redux'
-
+import Card from 'react-bootstrap/Card';
+import Spinner from 'react-bootstrap/Spinner';
+import CardColumns from 'react-bootstrap/CardColumns';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 function BreedsContainer(props) {
   useEffect(() => {
@@ -10,23 +15,32 @@ function BreedsContainer(props) {
   }, [])
 
  return (
-    <div>
-      <h2>Breeds!</h2>
+    <div className="mt-3">
       {props.breeds.loading ?
       <div>
-        <h2>loading...</h2>
+        <Spinner className="mt-5" animation="border" variant="info" />
       </div>
-        :
-      <div>
-        {props.breeds.breeds.map(breed => (
-          <div key={breed.id}>
-              <Link to={`/breeds/${breed.id}`}><h3>{ breed.name } ({ breed.origin })</h3></Link>
-              <h4>{ breed.temperament }</h4>
-              <p>{ breed.description }</p>
-              <a href={breed.wikipedia_url}>wikipedia</a>
-          </div>
-        ))}
-      </div>
+      :
+      <Container>
+        <Row>
+          {props.breeds.breeds.map(breed => (
+          <Col sm={4} className="align-items-stretch mb-3">
+            <Card className="h-100">
+              <Card.Header className="text-uppercase">{ breed.name } ({ breed.origin })</Card.Header>
+              <Card.Body>
+                <Card.Text>
+                { breed.description }
+                </Card.Text>
+              </Card.Body>
+              <Card.Footer>
+                <Card.Link as={Link} to={`/breeds/${breed.id}`}>Details</Card.Link>
+                <Card.Link href={breed.wikipedia_url}>Wikipedia</Card.Link>
+              </Card.Footer>
+            </Card>
+          </Col>
+          ))}
+        </Row>
+      </Container>
       }
     </div> 
   );

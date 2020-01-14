@@ -24,7 +24,7 @@ function App() {
               <Route path="/breeds/:id" component={BreedDetailsContainer}></Route>
               <Route path="/search" component={SearchContainer}></Route>
             </Switch>
-        </div>
+            </div>
       </BrowserRouter>
     </Provider>
   );
