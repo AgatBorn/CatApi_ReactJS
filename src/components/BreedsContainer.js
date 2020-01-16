@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { getAllBreedsRequest } from '../redux'
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
-import CardColumns from 'react-bootstrap/CardColumns';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -12,21 +11,23 @@ import Col from 'react-bootstrap/Col'
 function BreedsContainer(props) {
   useEffect(() => {
     props.getBreeds()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
  return (
     <div className="mt-3">
       {props.breeds.loading ?
       <div>
-        <Spinner className="mt-5" animation="border" variant="info" />
+        <Spinner className="mt-5" animation="border" variant="primary" />
       </div>
       :
       <Container>
         <Row>
           {props.breeds.breeds.map(breed => (
-          <Col sm={4} className="align-items-stretch mb-3">
+          <Col key={breed.id} sm={4} className="align-items-stretch mb-3">
             <Card className="h-100">
               <Card.Header className="text-uppercase">{ breed.name } ({ breed.origin })</Card.Header>
+              <Card.Img variant="top" src={breed.url} />
               <Card.Body>
                 <Card.Text>
                 { breed.description }

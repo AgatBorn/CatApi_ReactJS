@@ -2,11 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Collapse from 'react-bootstrap/Collapse';
 
 function NavBarContainer() {
   return (
-    <Navbar collapseOnSelect bg="primary" variant="dark" expand="sm">
+    <Navbar collapseOnSelect bg="dark" variant="dark" expand="sm">
       <Navbar.Brand as={Link} to="/">CatAPI</Navbar.Brand>
       <Navbar.Toggle aria-controls="#mainMenu"></Navbar.Toggle>
       <Navbar.Collapse id="mainMenu">

@@ -63,7 +63,6 @@ const searchImages = (category, breed, type, order) => {
     query = appendToQuery(query, 'breed_id', breed);
     query = appendToQuery(query, 'mime_types', type);
     query = appendToQuery(query, 'order', order);
-    console.log(query);
 
     const url = query.length > 1 ? (`https://api.thecatapi.com/v1/images/search${query}`) : ('https://api.thecatapi.com/v1/images/search');
     console.log(url);

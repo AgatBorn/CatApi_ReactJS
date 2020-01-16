@@ -11,6 +11,7 @@ function SearchContainer(props) {
   
   useEffect(() => {
     props.getBreedsAndCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -56,7 +57,7 @@ function SearchContainer(props) {
         :
         <div>
           {props.search.images && props.search.images.map(image => (
-            <a href={image.url}><img className="voteImg" width="200" height="300" src={image.url}></img></a>
+            <a href={image.url}><img className="voteImg" width="200" height="300" src={image.url} alt=""></img></a>
           ))}
         </div>}
       </div>}

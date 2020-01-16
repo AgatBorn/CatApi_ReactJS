@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, all } from 'redux-saga/effects'
 import axios from 'axios'
 import { getBreedDetailsSuccess, getBreedDetailsFailure } from '../redux'
 
@@ -10,11 +10,29 @@ const getDetails = (id) => {
     return axios.get(`https://api.thecatapi.com/v1/images/search?breed_id=${id}`, {headers: config});
 }
 
+const searchImages = (category) => {
+    let query = `?limit=1&breed_id=${category}`;
+    console.log(query);
+
+    const url = query.length > 1 ? (`https://api.thecatapi.com/v1/images/search${query}`) : ('https://api.thecatapi.com/v1/images/search');
+    console.log(url);
+
+    return axios.get(url, {headers: config});
+}
+
 export function* getBreedDetails(action) {
     try {
-        const response = yield call(getDetails, action.payload);
-        console.log(response.data[0].breeds[0])
-        yield put(getBreedDetailsSuccess(response.data[0].breeds[0]));
+        const [details, img] = yield all ([
+            call(getDetails, action.payload),
+            call(searchImages, action.payload)
+        ]);
+        console.log(details.data[0].breeds[0])
+        console.log(img.data)
+        const response = {
+            ...details.data[0].breeds[0],
+            "img": img.data[0].url
+        }
+        yield put(getBreedDetailsSuccess(response));
     } catch (error) {
         yield put(getBreedDetailsFailure(error.message));
     }

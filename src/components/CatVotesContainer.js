@@ -5,13 +5,14 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 function  CatVotesContainer(props) {
+  
   useEffect(() => {
     if (props.data.getNextImage === true) {
       props.getCat()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.getNextImage])
  return (
     <Container fluid>
@@ -22,11 +23,11 @@ function  CatVotesContainer(props) {
       <div className="imgContainer">
         { props.data.loading ? 
         <div>
-          <Spinner animation="border" variant="primary" />
+          <Spinner className="mt-5" animation="border" variant="primary" />
         </div>
         : 
         <div>
-          <img className="voteImg" width="500" height="700" src={props.data.cat.url} />
+          <img className="voteImg" width="500" height="700" src={props.data.cat.url} alt="" />
         </div>}
       </div>
       <Button className="mr-1 mt-3" variant="primary" style={{ width: '100px'}} onClick={() => props.voteYes(props.data.cat.id, 1)}>YES</Button>
