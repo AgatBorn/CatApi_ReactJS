@@ -11,3 +11,13 @@
   height: 700px;
 }
 
+.parentImgGallery {
+  column-count: 3;
+  column-gap: 5px; 
+  row-gap: 5px;
+}
+
+.imgImgGallery {
+  width: 100%;
+  height: auto;
+}

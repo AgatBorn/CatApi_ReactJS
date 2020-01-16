@@ -1,7 +1,12 @@
 import React, {useState, useEffect}  from 'react';
 import { connect } from 'react-redux'
 import { getBreedsAndCategoriesRequest, searchRequest } from '../redux'
-
+import Spinner from 'react-bootstrap/Spinner';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 function SearchContainer(props) {
   const [selectedBreed, setSelectedBreed] = useState('');
@@ -15,53 +20,77 @@ function SearchContainer(props) {
   }, [])
 
   return (
-    <div>
-      <h2>Search</h2>
-      { props.search.loading ? 
-      <div><h3>loading...</h3></div>
+      props.search.loading ? 
+      <Spinner className="mt-5" animation="border" variant="primary" />
       : 
-      <div>
-        <div> Breed
-          <select value={selectedBreed} onChange={(e) => setSelectedBreed(e.target.value)} >
-            <option value=''></option>
-            {props.search.breeds.map(breed => (
-              <option value={breed.id}>{breed.name}</option>
-            ))}
-          </select>
-        </div>
-        <div> Category
-          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} >
+      <Container>
+      <Form className="mt-4 text-left">
+        <Form.Group as={Row} controlId="breed">
+          <Form.Label column sm="2">
+            Breed
+          </Form.Label>
+          <Col sm={10}>
+            <Form.Control as="select" value={selectedBreed} onChange={(e) => setSelectedBreed(e.target.value)} >
+              <option value=''></option>
+              {props.search.breeds.map(breed => (
+                <option value={breed.id}>{breed.name}</option>
+              ))}
+            </Form.Control>
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} controlId="category"> 
+          <Form.Label column sm="2">
+            Category
+          </Form.Label>
+          <Col sm={10}>
+          <Form.Control as="select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
             <option value=''></option>
             {props.search.categories.map(category => (
               <option value={category.id}>{category.name}</option>
             ))}
-          </select>
-        </div>
-        <div> Type
-          <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)} >
-            <option value="gif,jpg,png">ALL</option>
-            <option value="jpg,png">STATIC</option>
-            <option value="gif">ANIMATED</option>
-          </select>
-        </div>
-        <div> Order
-          <select value={selectedOrder} onChange={(e) => setSelectedOrder(e.target.value)} >
-            <option value="RANDOM">random</option>
-            <option value="ASC">asc</option>
-            <option value="DESC">desc</option>
-          </select>
-        </div>
-        <button onClick={() => props.searchImages(selectedCategory, selectedBreed, selectedType, selectedOrder)}>Search</button>
-        {props.search.loading_images ?
-        <div><h3>searching...</h3></div>
-        :
-        <div>
-          {props.search.images && props.search.images.map(image => (
-            <a href={image.url}><img className="voteImg" width="200" height="300" src={image.url} alt=""></img></a>
-          ))}
-        </div>}
+          </Form.Control>
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} controlId="type"> 
+          <Form.Label column sm={2}>
+            Type
+          </Form.Label>
+          <Col sm={10}>
+            <Form.Control as="select" value={selectedType} onChange={(e) => setSelectedType(e.target.value)} >
+              <option value="gif,jpg,png">ALL</option>
+              <option value="jpg,png">STATIC</option>
+              <option value="gif">ANIMATED</option>
+            </Form.Control>
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} controlId="order"> 
+          <Form.Label column sm={2}>
+            Order
+          </Form.Label>
+          <Col sm={10}>
+            <Form.Control as="select" value={selectedOrder} onChange={(e) => setSelectedOrder(e.target.value)} >
+              <option value="RANDOM">random</option>
+              <option value="ASC">asc</option>
+              <option value="DESC">desc</option>
+            </Form.Control>
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row}>
+          <Col className="text-right" sm={{ span: 2, offset: 10 }}>
+            <Button onClick={() => props.searchImages(selectedCategory, selectedBreed, selectedType, selectedOrder)}>Search</Button>
+          </Col>
+        </Form.Group>
+      </Form>
+      {props.search.loading_images ?
+      <Spinner className="mt-5" animation="border" variant="primary" />
+      :
+      <div className="parentImgGallery">
+        {props.search.images && props.search.images.map(image => (
+          <img className="imgImgGallery mt-1" height="300" src={image.url} alt=""></img>
+        ))}
       </div>}
-    </div>
+    </Container>
+    
   );
 }
 

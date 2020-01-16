@@ -15,11 +15,12 @@ function  CatVotesContainer(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.getNextImage])
  return (
-    <Container fluid>
-      <Jumbotron fluid className="p-3 bg-light text-dark">
+   <div>
+      <Jumbotron fluid className="p-3 bg-primary text-light">
         <h1 className="h2">Vote for your favourite cats!</h1>
         <p>Click 'YES' if you like this cat, 'NO' if you don't like it.</p>
       </Jumbotron>
+    <Container fluid>
       <div className="imgContainer">
         { props.data.loading ? 
         <div>
@@ -31,8 +32,9 @@ function  CatVotesContainer(props) {
         </div>}
       </div>
       <Button className="mr-1 mt-3" variant="primary" style={{ width: '100px'}} onClick={() => props.voteYes(props.data.cat.id, 1)}>YES</Button>
-      <Button className="ml-1 mt-3" variant="outline-secondary" style={{ width: '100px'}} onClick={() => props.voteYes(props.data.cat.id, 0)}>NO</Button> 
+      <Button className="ml-1 mt-3" variant="danger" style={{ width: '100px'}} onClick={() => props.voteYes(props.data.cat.id, 0)}>NO</Button> 
     </Container> 
+    </div>
   );
 }
 
