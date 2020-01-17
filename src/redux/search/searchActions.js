@@ -13,17 +13,17 @@ export const getBreedsAndCategoriesFinished = (data) => {
     }
 }
 
-export const searchRequest = (category, breed, type, order) => {
+export const searchRequest = (category, breed, type, order, page) => {
     return {
         type: SEARCH_REQUEST,
-        payload: [category, breed, type, order]
+        payload: [category, breed, type, order, page]
     }
 }
 
-export const searchSuccess = (images) => {
+export const searchSuccess = (images, imgCount) => {
     return {
         type: SEARCH_SUCCESS,
-        payload: images
+        payload: [images, imgCount]
     }
 }
 

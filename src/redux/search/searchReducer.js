@@ -8,6 +8,7 @@ const initialState = {
     categories_error: '',
     loading_images: false,
     images: [],
+    imgCount: 0,
     images_error: ''
 }
 
@@ -37,7 +38,8 @@ const searchReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading_images: false,
-                images: action.payload,
+                images: action.payload[0],
+                imgCount: action.payload[1],
                 images_error: ''
             }
         case SEARCH_FAILURE:

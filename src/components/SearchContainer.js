@@ -1,29 +1,43 @@
 import React, {useState, useEffect}  from 'react';
 import { connect } from 'react-redux'
-import { getBreedsAndCategoriesRequest, searchRequest } from '../redux'
+import { getBreedsAndCategoriesRequest, searchRequest, getBreedsAndCategoriesFinished } from '../redux'
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Pagination from 'react-bootstrap/Pagination';
 
 function SearchContainer(props) {
   const [selectedBreed, setSelectedBreed] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedType, setSelectedType] = useState('ALL');
   const [selectedOrder, setSelectedOrder] = useState('random');
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const maxPage = Math.floor(props.search.imgCount / 10);
   
   useEffect(() => {
     props.getBreedsAndCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const getNextPage = (page) => {
+    setCurrentPage(page);
+    props.searchImages(selectedCategory, selectedBreed, selectedType, selectedOrder, page);
+  }
+
+  const getNewSearch = () => {
+    setCurrentPage(0);
+    props.searchImages(selectedCategory, selectedBreed, selectedType, selectedOrder);
+  }
+
   return (
-      props.search.loading ? 
-      <Spinner className="mt-5" animation="border" variant="primary" />
-      : 
-      <Container>
+    props.search.loading ? 
+    <Spinner className="mt-5" animation="border" variant="primary" />
+    : 
+    <Container>
       <Form className="mt-4 text-left">
         <Form.Group as={Row} controlId="breed">
           <Form.Label column sm="2">
@@ -33,7 +47,7 @@ function SearchContainer(props) {
             <Form.Control as="select" value={selectedBreed} onChange={(e) => setSelectedBreed(e.target.value)} >
               <option value=''></option>
               {props.search.breeds.map(breed => (
-                <option value={breed.id}>{breed.name}</option>
+                <option key={breed.id} value={breed.id}>{breed.name}</option>
               ))}
             </Form.Control>
           </Col>
@@ -46,7 +60,7 @@ function SearchContainer(props) {
           <Form.Control as="select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
             <option value=''></option>
             {props.search.categories.map(category => (
-              <option value={category.id}>{category.name}</option>
+              <option key={category.id} value={category.id}>{category.name}</option>
             ))}
           </Form.Control>
           </Col>
@@ -77,12 +91,20 @@ function SearchContainer(props) {
         </Form.Group>
         <Form.Group as={Row}>
           <Col className="text-right" sm={{ span: 2, offset: 10 }}>
-            <Button onClick={() => props.searchImages(selectedCategory, selectedBreed, selectedType, selectedOrder)}>Search</Button>
+            <Button onClick={() => getNewSearch()}>Search</Button>
           </Col>
         </Form.Group>
       </Form>
+      { props.search.imgCount > 0 && <Col className="text-center" sm={{ span: 2, offset: 5 }}>
+        <Pagination className="mx-auto">
+        {currentPage > 0 && <Pagination.Prev onClick={() => getNextPage(currentPage - 1)} /> }
+        {currentPage > 0 && <Pagination.Item onClick={() => getNextPage(currentPage - 1)}>{currentPage}</Pagination.Item>}
+        <Pagination.Item active onClick={() => getNextPage(currentPage)}>{currentPage + 1}</Pagination.Item>
+        {currentPage !== maxPage && <Pagination.Item onClick={() => getNextPage(currentPage + 1)}>{currentPage + 2}</Pagination.Item>}
+        {currentPage !== maxPage && <Pagination.Next onClick={() => getNextPage(currentPage + 1)} />}
+      </Pagination> </Col>}
       {props.search.loading_images ?
-      <Spinner className="mt-5" animation="border" variant="primary" />
+      <Spinner className="mt-5 mx-auto" animation="border" variant="primary" />
       :
       <div className="parentImgGallery">
         {props.search.images && props.search.images.map(image => (
@@ -103,7 +125,7 @@ const mapPropsToState = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getBreedsAndCategories: () => dispatch(getBreedsAndCategoriesRequest()),
-    searchImages: (category, breed, type, order) => dispatch(searchRequest(category, breed, type, order))
+    searchImages: (category, breed, type, order, page) => dispatch(searchRequest(category, breed, type, order, page))
   }
 }
 

@@ -57,12 +57,13 @@ function appendToQuery(query, queryKey, queryValue) {
     return query;
 }
 
-const searchImages = (category, breed, type, order) => {
+const searchImages = (category, breed, type, order, page) => {
     let query = '?limit=10';
     query = appendToQuery(query, 'category_ids', category);
     query = appendToQuery(query, 'breed_id', breed);
     query = appendToQuery(query, 'mime_types', type);
     query = appendToQuery(query, 'order', order);
+    query = appendToQuery(query, 'page', page);
 
     const url = query.length > 1 ? (`https://api.thecatapi.com/v1/images/search${query}`) : ('https://api.thecatapi.com/v1/images/search');
     console.log(url);
@@ -73,9 +74,10 @@ const searchImages = (category, breed, type, order) => {
 export function* search(action) {
     try {
         console.log("search");
-        const response = yield call(searchImages, action.payload[0], action.payload[1], action.payload[2], action.payload[3]);
-        console.log(response.data);
-        yield put(searchSuccess(response.data));
+        const response = yield call(searchImages, action.payload[0], action.payload[1], action.payload[2], action.payload[3], action.payload[4]);
+        const imgCount = response.headers['pagination-count'];
+        console.log(imgCount);
+        yield put(searchSuccess(response.data, imgCount));
     } catch (error) {
         console.log(error);
         yield put(searchFailure(error));
