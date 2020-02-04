@@ -39,7 +39,7 @@ const searchReducer = (state = initialState, action) => {
                 ...state,
                 loading_images: false,
                 images: action.payload[0],
-                imgCount: action.payload[1],
+                imgCount: action.payload[1] || 0,
                 images_error: ''
             }
         case SEARCH_FAILURE:

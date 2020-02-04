@@ -1,12 +1,13 @@
-import React, {useEffect} from 'react'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { getAllBreedsRequest } from '../redux'
+import React, {useEffect} from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { getAllBreedsRequest } from '../redux';
 
 function BreedsContainer(props) {
   useEffect(() => {
@@ -16,14 +17,14 @@ function BreedsContainer(props) {
 
  return (
     <div className="mt-3">
-      {props.breeds.loading ?
+      {props.loading ?
       <div>
         <Spinner className="mt-5" animation="border" variant="primary" />
       </div>
       :
       <Container>
         <Row>
-          {props.breeds.breeds.map(breed => (
+          {props.breeds.map(breed => (
           <Col key={breed.id} sm={4} className="align-items-stretch mb-3">
             <Card className="h-100">
               <Card.Header className="text-uppercase">{ breed.name } ({ breed.origin })</Card.Header>
@@ -47,9 +48,23 @@ function BreedsContainer(props) {
   );
 }
 
+BreedsContainer.propTypes = {
+  getBreeds: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  breeds: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    origin: PropTypes.string,
+    url: PropTypes.string,
+    description: PropTypes.string,
+    wikipedia_url: PropTypes.string
+  }))
+}
+
 const mapPropsToState = (state) => {
   return {
-    breeds: state.breeds
+    breeds: state.breeds.breeds,
+    loading: state.breeds.loading,
   }
 }
 

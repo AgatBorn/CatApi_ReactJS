@@ -1,12 +1,13 @@
-import React, {useEffect} from 'react'
-import { connect } from 'react-redux'
-import { getBreedDetailsRequest } from '../redux'
+import React, {useEffect} from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
+import { getBreedDetailsRequest } from '../redux';
 
 function BreedDetailsContainer(props) {
     useEffect(() => {
@@ -139,6 +140,45 @@ function BreedDetailsContainer(props) {
         </div>  
         </Container>
     )
+}
+
+BreedDetailsContainer.propTypes = {
+    getDetails: PropTypes.func,
+    loading: PropTypes.bool,
+    breed: PropTypes.shape({
+        img: PropTypes.string,
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string,
+        origin: PropTypes.string,
+        temperament: PropTypes.string,
+        description: PropTypes.string,
+
+        natural: PropTypes.number,
+        experimental: PropTypes.number,
+        rare: PropTypes.number,
+
+        hairless: PropTypes.number,
+        short_legs: PropTypes.number,
+        suppressed_tail: PropTypes.number,
+
+        child_friendly: PropTypes.number,
+        dog_friendly: PropTypes.number,
+        stranger_friendly: PropTypes.number,
+
+        hypoallergenic: PropTypes.number,
+        health_issues: PropTypes.number,
+        life_span: PropTypes.string,
+
+        affection_level: PropTypes.number,
+        energy_level: PropTypes.number,
+        intelligence: PropTypes.number,
+
+        indoor: PropTypes.number,
+        vocalisation: PropTypes.number,
+        social_needs: PropTypes.number,
+        
+        wikipedia_url: PropTypes.string
+    })
 }
 
 const mapPropsToState = (state) => {

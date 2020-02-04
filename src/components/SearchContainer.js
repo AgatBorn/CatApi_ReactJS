@@ -1,6 +1,6 @@
 import React, {useState, useEffect}  from 'react';
-import { connect } from 'react-redux'
-import { getBreedsAndCategoriesRequest, searchRequest, getBreedsAndCategoriesFinished } from '../redux'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Pagination from 'react-bootstrap/Pagination';
+import { getBreedsAndCategoriesRequest, searchRequest } from '../redux';
 
 function SearchContainer(props) {
   const [selectedBreed, setSelectedBreed] = useState('');
@@ -16,7 +17,7 @@ function SearchContainer(props) {
   const [selectedOrder, setSelectedOrder] = useState('random');
   const [currentPage, setCurrentPage] = useState(0);
 
-  const maxPage = Math.floor(props.search.imgCount / 10);
+  const maxPage = Math.floor(props.imgCount / 10);
   
   useEffect(() => {
     props.getBreedsAndCategories();
@@ -34,7 +35,7 @@ function SearchContainer(props) {
   }
 
   return (
-    props.search.loading ? 
+    props.loading ? 
     <Spinner className="mt-5" animation="border" variant="primary" />
     : 
     <Container>
@@ -46,7 +47,7 @@ function SearchContainer(props) {
           <Col sm={10}>
             <Form.Control as="select" value={selectedBreed} onChange={(e) => setSelectedBreed(e.target.value)} >
               <option value=''></option>
-              {props.search.breeds.map(breed => (
+              {props.breeds.map(breed => (
                 <option key={breed.id} value={breed.id}>{breed.name}</option>
               ))}
             </Form.Control>
@@ -59,7 +60,7 @@ function SearchContainer(props) {
           <Col sm={10}>
           <Form.Control as="select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
             <option value=''></option>
-            {props.search.categories.map(category => (
+            {props.categories.map(category => (
               <option key={category.id} value={category.id}>{category.name}</option>
             ))}
           </Form.Control>
@@ -95,7 +96,7 @@ function SearchContainer(props) {
           </Col>
         </Form.Group>
       </Form>
-      { props.search.imgCount > 0 && <Col className="text-center" sm={{ span: 2, offset: 5 }}>
+      { props.imgCount > 0 && <Col className="text-center" sm={{ span: 2, offset: 5 }}>
         <Pagination className="mx-auto">
         {currentPage > 0 && <Pagination.Prev onClick={() => getNextPage(currentPage - 1)} /> }
         {currentPage > 0 && <Pagination.Item onClick={() => getNextPage(currentPage - 1)}>{currentPage}</Pagination.Item>}
@@ -103,12 +104,12 @@ function SearchContainer(props) {
         {currentPage !== maxPage && <Pagination.Item onClick={() => getNextPage(currentPage + 1)}>{currentPage + 2}</Pagination.Item>}
         {currentPage !== maxPage && <Pagination.Next onClick={() => getNextPage(currentPage + 1)} />}
       </Pagination> </Col>}
-      {props.search.loading_images ?
+      {props.loading_images ?
       <Spinner className="mt-5 mx-auto" animation="border" variant="primary" />
       :
       <div className="parentImgGallery">
-        {props.search.images && props.search.images.map(image => (
-          <img className="imgImgGallery mt-1" height="300" src={image.url} alt=""></img>
+        {props.images && props.images.map(image => (
+          <img key={image.url} className="imgImgGallery mt-1" height="300" src={image.url} alt=""></img>
         ))}
       </div>}
     </Container>
@@ -116,9 +117,33 @@ function SearchContainer(props) {
   );
 }
 
+SearchContainer.propTypes = {
+  getBreedsAndCategories: PropTypes.func.isRequired,
+  searchImages: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  imgCount: PropTypes.number,
+  images: PropTypes.arrayOf(PropTypes.shape({
+    url: PropTypes.string.isRequired
+  })),
+  loading_images: PropTypes.bool,
+  categories: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string
+  })),
+  breeds: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string
+  }))
+}
+
 const mapPropsToState = (state) => {
   return {
-    search: state.search
+    loading: state.search.loading,
+    categories: state.search.categories,
+    breeds: state.search.breeds,
+    loading_images: state.search.loading_images,
+    imgCount: state.search.imgCount,
+    images: state.search.images
   }
 }
 
