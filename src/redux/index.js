@@ -2,3 +2,4 @@ export { getCatRequest, getCatSuccess, getCatFailure, voteCatRequest, voteCatSuc
 export { getAllBreedsRequest, getAllBreedsSuccess, getAllBreedsFailure } from './breeds/breedsActions'
 export { getBreedDetailsRequest, getBreedDetailsSuccess, getBreedDetailsFailure } from './breedDetails/breedDetailsActions'
 export { getBreedsAndCategoriesRequest, getBreedsAndCategoriesFinished, searchRequest, searchSuccess, searchFailure } from './search/searchActions'
+export { setCurrentLanguage } from './locale/localActions'

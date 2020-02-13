@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from "react-intl";
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
@@ -35,7 +36,9 @@ function BreedsContainer(props) {
                 </Card.Text>
               </Card.Body>
               <Card.Footer>
-                <Card.Link as={Link} to={`/breeds/${breed.id}`}>Details</Card.Link>
+                <Card.Link as={Link} to={`/breeds/${breed.id}`}>
+                  <FormattedMessage id="breeds.detailsTitle" defaultMessage="Details" />
+                </Card.Link>
                 <Card.Link href={breed.wikipedia_url}>Wikipedia</Card.Link>
               </Card.Footer>
             </Card>

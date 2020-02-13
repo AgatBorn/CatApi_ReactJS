@@ -1,6 +1,7 @@
 import React, {useState, useEffect}  from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from "react-intl";
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -42,7 +43,7 @@ function SearchContainer(props) {
       <Form className="mt-4 text-left">
         <Form.Group as={Row} controlId="breed">
           <Form.Label column sm="2">
-            Breed
+            <FormattedMessage id="search.breedTitle" defaultMessage="Breed" />
           </Form.Label>
           <Col sm={10}>
             <Form.Control as="select" value={selectedBreed} onChange={(e) => setSelectedBreed(e.target.value)} >
@@ -55,7 +56,7 @@ function SearchContainer(props) {
         </Form.Group>
         <Form.Group as={Row} controlId="category"> 
           <Form.Label column sm="2">
-            Category
+            <FormattedMessage id="search.categoryTitle" defaultMessage="Category" />
           </Form.Label>
           <Col sm={10}>
           <Form.Control as="select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
@@ -68,7 +69,7 @@ function SearchContainer(props) {
         </Form.Group>
         <Form.Group as={Row} controlId="type"> 
           <Form.Label column sm={2}>
-            Type
+            <FormattedMessage id="search.typeTitle" defaultMessage="Type" />
           </Form.Label>
           <Col sm={10}>
             <Form.Control as="select" value={selectedType} onChange={(e) => setSelectedType(e.target.value)} >
@@ -80,7 +81,7 @@ function SearchContainer(props) {
         </Form.Group>
         <Form.Group as={Row} controlId="order"> 
           <Form.Label column sm={2}>
-            Order
+            <FormattedMessage id="search.orderTitle" defaultMessage="Order" />
           </Form.Label>
           <Col sm={10}>
             <Form.Control as="select" value={selectedOrder} onChange={(e) => setSelectedOrder(e.target.value)} >
@@ -92,7 +93,9 @@ function SearchContainer(props) {
         </Form.Group>
         <Form.Group as={Row}>
           <Col className="text-right" sm={{ span: 2, offset: 10 }}>
-            <Button onClick={() => getNewSearch()}>Search</Button>
+            <Button onClick={() => getNewSearch()}>
+              <FormattedMessage id="search.buttonSearch" defaultMessage="Search" />
+            </Button>
           </Col>
         </Form.Group>
       </Form>

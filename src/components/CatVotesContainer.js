@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from "react-intl";
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
@@ -18,8 +19,8 @@ function CatVotesContainer(props) {
   return (
    <div>
       <Jumbotron fluid className="p-3 bg-primary text-light">
-        <h1 className="h2">Vote for your favourite cats!</h1>
-        <p>Click 'YES' if you like this cat, 'NO' if you don't like it.</p>
+        <h1 className="h2"><FormattedMessage id="catVotes.title" defaultMessage="Vote for your favourite cats!" /></h1>
+        <p><FormattedMessage id="catVotes.description" defaultMessage="Click 'YES' if you like this cat, 'NO' if you don't like it." /></p>
       </Jumbotron>
     <Container fluid>
       <div className="imgContainer">
@@ -32,8 +33,12 @@ function CatVotesContainer(props) {
           <img className="voteImg" width="500" height="700" src={props.cat.url} alt="" />
         </div>}
       </div>
-      <Button className="mr-1 mt-3" variant="primary" style={{ width: '100px'}} onClick={() => props.voteYes(props.cat.id, 1)}>YES</Button>
-      <Button className="ml-1 mt-3" variant="danger" style={{ width: '100px'}} onClick={() => props.voteYes(props.cat.id, 0)}>NO</Button> 
+      <Button className="mr-1 mt-3" variant="primary" style={{ width: '100px'}} onClick={() => props.voteYes(props.cat.id, 1)}>
+        <FormattedMessage id="catVotes.voteYes" defaultMessage="YES" />
+      </Button>
+      <Button className="ml-1 mt-3" variant="danger" style={{ width: '100px'}} onClick={() => props.voteYes(props.cat.id, 0)}>
+        <FormattedMessage id="catVotes.voteNo" defaultMessage="NO" />
+      </Button> 
     </Container> 
     </div>
   );
