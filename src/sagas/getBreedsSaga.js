@@ -21,16 +21,19 @@ export function* getAllBreeds() {
         const allBreeds = yield call(getBreeds);
         const allBreedsIds = allBreeds.data.map(x => x.id);
         const allBreedsImages = yield all(allBreedsIds.map((breed) => call(searchImages, breed)));
-        const response = allBreeds.data.map((breed, index) => {
-            return {
-                ...breed,
-                "url": allBreedsImages[index].data[0].url
+        let response = allBreeds.data.map((breed, index) => {
+            if (allBreedsImages[index]?.data[0]?.url) {
+                return {
+                    ...breed,
+                    "url": allBreedsImages[index]?.data[0]?.url
+                };
+            } else {
+                return {};
             }
-        })
-        console.log(response);
+        });
+        response = response.filter(value => Object.keys(value).length !== 0);
         yield put(getAllBreedsSuccess(response));
     } catch (error) {
-        console.log(error);
         yield put(getAllBreedsFailure(error.message));
     }
 }

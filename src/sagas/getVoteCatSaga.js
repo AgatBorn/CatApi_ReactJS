@@ -21,7 +21,6 @@ const sendVote = (id, vote) => {
 export function* getVoteCat() {
     try {
         const response = yield call(getCat);
-        console.log(response)
         yield put(getCatSuccess(response.data[0]));
     } catch (error) {
         yield put(getCatFailure(error.message));
@@ -31,7 +30,6 @@ export function* getVoteCat() {
 export function* sendVoteForCat(action) {
     try {
         const response = yield call(sendVote, action.payload.id, action.payload.vote);
-        console.log(response)
         yield put(voteCatSuccess(response));
     } catch (error) {
         yield put(voteCatFailure(error.message));

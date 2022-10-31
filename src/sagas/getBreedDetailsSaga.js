@@ -12,10 +12,8 @@ const getDetails = (id) => {
 
 const searchImages = (category) => {
     let query = `?limit=1&breed_id=${category}`;
-    console.log(query);
 
     const url = query.length > 1 ? (`https://api.thecatapi.com/v1/images/search${query}`) : ('https://api.thecatapi.com/v1/images/search');
-    console.log(url);
 
     return axios.get(url, {headers: config});
 }
@@ -26,8 +24,6 @@ export function* getBreedDetails(action) {
             call(getDetails, action.payload),
             call(searchImages, action.payload)
         ]);
-        console.log(details.data[0].breeds[0])
-        console.log(img.data)
         const response = {
             ...details.data[0].breeds[0],
             "img": img.data[0].url

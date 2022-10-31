@@ -17,7 +17,6 @@ const getBreeds = () => {
 export function* getAllCategories() {
     try {
         const response = yield call(getCategories);
-        console.log(response);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -27,7 +26,6 @@ export function* getAllCategories() {
 export function* getAllBreeds() {
     try {
         const response = yield call(getBreeds);
-        console.log(response);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -66,20 +64,17 @@ const searchImages = (category, breed, type, order, page) => {
     query = appendToQuery(query, 'page', page);
 
     const url = query.length > 1 ? (`https://api.thecatapi.com/v1/images/search${query}`) : ('https://api.thecatapi.com/v1/images/search');
-    console.log(url);
 
     return axios.get(url, {headers: config});
 }
 
 export function* search(action) {
     try {
-        console.log("search");
         const response = yield call(searchImages, action.payload[0], action.payload[1], action.payload[2], action.payload[3], action.payload[4]);
         const imgCount = response.headers['pagination-count'];
-        console.log(imgCount);
+
         yield put(searchSuccess(response.data, imgCount));
     } catch (error) {
-        console.log(error);
         yield put(searchFailure(error));
     }
 }
